@@ -1,6 +1,8 @@
 package com.aizoon.project.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.aizoon.project.model.Categoria;
@@ -55,10 +57,15 @@ public class ProdottoService {
 				.collect(Collectors.toList());
 	}
 
-	public List<ProdottoResponseDto> getByCategoria(Long id_categoria){
-		Categoria cat = catRepo.findById(id_categoria).orElseThrow(() -> new ResourceNotFoundException("Nessuna categoria trovata"));
-		return cat.getProdotti().stream()
-				.map(p -> p.copyTo())
-				.collect(Collectors.toList());
+	public Set<ProdottoResponseDto> getByCategoria(Long[] categorie){
+		Set<ProdottoResponseDto> prodotti = new HashSet<>();
+		for(Long id: categorie) {
+			Categoria cat = catRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Nessuna categoria trovata"));
+			Set<ProdottoResponseDto> partial = cat.getProdotti().stream()
+					.map(p -> p.copyTo())
+					.collect(Collectors.toSet());
+			prodotti.addAll(partial);
+		}
+		return prodotti;
 	}
 }

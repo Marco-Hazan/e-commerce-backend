@@ -2,6 +2,8 @@ package com.aizoon.project.dto.response;
 
 import com.aizoon.project.model.Categoria;
 
+import java.util.Objects;
+
 public class ProdottoResponseDto {
 	
 	private Long id;
@@ -76,5 +78,18 @@ public class ProdottoResponseDto {
 
 	public void setCategoria(CategoriaResponseDto categoria) {
 		this.categoria = categoria;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ProdottoResponseDto that = (ProdottoResponseDto) o;
+		return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) && Objects.equals(descrizione, that.descrizione) && Objects.equals(prezzo, that.prezzo) && Objects.equals(taglia, that.taglia) && Objects.equals(immagine, that.immagine) && Objects.equals(categoria, that.categoria);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, nome, descrizione, prezzo, taglia, immagine, categoria);
 	}
 }

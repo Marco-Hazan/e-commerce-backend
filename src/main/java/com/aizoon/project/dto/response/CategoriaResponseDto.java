@@ -10,7 +10,6 @@ public class CategoriaResponseDto {
     private Long id;
     private String nome;
 
-
     private int totItems;
 
     public CategoriaResponseDto(){}

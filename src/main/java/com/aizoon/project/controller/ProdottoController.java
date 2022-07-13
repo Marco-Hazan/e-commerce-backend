@@ -3,21 +3,14 @@ package com.aizoon.project.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.aizoon.project.dto.request.ProdottoRequestDto;
 import com.aizoon.project.dto.response.ProdottoResponseDto;
@@ -63,9 +56,9 @@ public class ProdottoController {
 		return  ResponseEntity.ok(prodService.findAll());
 	}
 
-	@GetMapping("/prodotti/categoria/{id}")
-	public ResponseEntity<List<ProdottoResponseDto>> getByCategoria(@PathVariable (value = "id") Long id){
-		return ResponseEntity.ok(prodService.getByCategoria(id));
+	@GetMapping("/prodotti/categoria/")
+	public ResponseEntity<Set<ProdottoResponseDto>> getByCategoria(@RequestParam Long[] categorie){
+		return ResponseEntity.ok(prodService.getByCategoria(categorie));
 	}
 
 }
