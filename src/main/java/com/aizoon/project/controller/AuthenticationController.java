@@ -56,7 +56,7 @@ public class AuthenticationController {
                 jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
-                userDetails.getPassword(),
+                userDetails.getEmail(),
                 roles
         ));
     }
