@@ -17,7 +17,7 @@ import com.aizoon.project.dto.response.ProdottoResponseDto;
 import com.aizoon.project.service.ProdottoService;
 		
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1")
 public class ProdottoController {
 	
@@ -57,7 +57,7 @@ public class ProdottoController {
 	}
 
 	@GetMapping("/prodotti/categoria/")
-	public ResponseEntity<Set<ProdottoResponseDto>> getByCategoria(@RequestParam Long[] categorie){
+	public ResponseEntity<Set<ProdottoResponseDto>> getByCategoria(@RequestParam(value = "categorie") Long categorie[]){
 		return ResponseEntity.ok(prodService.getByCategoria(categorie));
 	}
 

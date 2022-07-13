@@ -101,6 +101,5 @@ public class Utente implements IEntity<UtenteRequestDto, UtenteResponseDto> {
     @Override
     public void copyFrom(UtenteRequestDto req) {
         BeanUtils.copyProperties(req,this);
-        this.setRuolo();
     }
 }

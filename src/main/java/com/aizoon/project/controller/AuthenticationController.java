@@ -5,6 +5,8 @@ import com.aizoon.project.dto.request.UtenteRequestDto;
 import com.aizoon.project.dto.response.JwtResponse;
 import com.aizoon.project.dto.response.UtenteResponseDto;
 import com.aizoon.project.model.Utente;
+import com.aizoon.project.security.jwt.JwtUtils;
+import com.aizoon.project.security.services.UserDetailsImpl;
 import com.aizoon.project.service.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +14,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
@@ -25,6 +32,9 @@ public class AuthenticationController {
 
     @Autowired
     AuthenticationManager authManager;
+
+    @Autowired
+    JwtUtils jwtUtils;
 
     @PostMapping("/signup")
     public ResponseEntity<UtenteResponseDto> register(@RequestBody UtenteRequestDto req){
@@ -37,7 +47,18 @@ public class AuthenticationController {
                 req.getUsername(), req.getPassword()
         ));
         SecurityContextHolder.getContext().setAuthentication(auth);
-        String jwt = jwtUtil.generateJwtToken(authentication);
+        String jwt = jwtUtils.generateJwtToken(auth);
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        List<String> roles = auth.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(new JwtResponse(
+                jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getPassword(),
+                roles
+        ));
     }
 
 

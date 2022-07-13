@@ -8,6 +8,7 @@ import com.aizoon.project.repository.RoleRepository;
 import com.aizoon.project.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +20,9 @@ public class UtenteService {
     @Autowired
     RoleRepository repoRole;
 
+    @Autowired
+    PasswordEncoder encoder;
+
     public UtenteResponseDto save(UtenteRequestDto req){
         if (repo.existsByUsername(req.getUsername())) {
             throw new RuntimeException("L'utente è gia stato trovato");
@@ -28,6 +32,7 @@ public class UtenteService {
         }
         Utente utente = new Utente();
         utente.copyFrom(req);
+        utente.setPassword(encoder.encode(req.getPassword()));
         utente.setRuolo(repoRole.findByNome(ERole.USER));
         return repo.save(utente).copyTo();
     }

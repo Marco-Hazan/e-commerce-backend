@@ -25,10 +25,10 @@ public class Role {
     }
 
     public ERole getNome() {
-        return ruolo;
+        return nome;
     }
 
     public void setNome(ERole nome) {
-        this.ruolo = nome;
+        this.nome = nome;
     }
 }
